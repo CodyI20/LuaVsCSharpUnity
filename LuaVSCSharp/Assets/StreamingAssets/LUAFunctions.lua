@@ -14,3 +14,9 @@ function update_health()
         set_fill(health / 100)
     end
 end
+
+function display_text()
+    for i=1, 1000 do
+        set_text("Hello from LUA!")
+    end
+end

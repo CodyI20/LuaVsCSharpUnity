@@ -191,52 +191,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &162307094
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 162307096}
-  - component: {fileID: 162307095}
-  m_Layer: 0
-  m_Name: LuaScript
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &162307095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162307094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0389cca15207fb4b96bdb2d6197a42c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBar: {fileID: 2017829572}
-  uiText: {fileID: 1631998946}
---- !u!4 &162307096
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162307094}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 215.14886, y: 319.3638, z: -3.53491}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &276106650
 GameObject:
   m_ObjectHideFlags: 0
@@ -938,6 +892,7 @@ GameObject:
   - component: {fileID: 649548739}
   - component: {fileID: 649548741}
   - component: {fileID: 649548740}
+  - component: {fileID: 649548742}
   m_Layer: 5
   m_Name: Test 2 Page
   m_TagString: Untagged
@@ -1005,6 +960,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 649548738}
   m_CullTransparentMesh: 1
+--- !u!114 &649548742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649548738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c38602a587b240608b933aa6c7c15e08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 2017829572}
 --- !u!1 &665838457
 GameObject:
   m_ObjectHideFlags: 0
@@ -1211,6 +1179,7 @@ GameObject:
   - component: {fileID: 874778564}
   - component: {fileID: 874778566}
   - component: {fileID: 874778565}
+  - component: {fileID: 874778567}
   m_Layer: 5
   m_Name: Test 1 Page
   m_TagString: Untagged
@@ -1278,6 +1247,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 874778563}
   m_CullTransparentMesh: 1
+--- !u!114 &874778567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874778563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20e2082f57a94a9b8fea5cf0fad044af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiText: {fileID: 1631998946}
 --- !u!1 &960055359
 GameObject:
   m_ObjectHideFlags: 0
@@ -1495,9 +1477,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 162307095}
-        m_TargetAssemblyTypeName: LuaRunner, Assembly-CSharp
-        m_MethodName: RunCSharpHealthUpdate
+      - m_Target: {fileID: 874778567}
+        m_TargetAssemblyTypeName: TestRunner, Assembly-CSharp
+        m_MethodName: RunCSharpAndTimeIt
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2197,9 +2179,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 162307095}
-        m_TargetAssemblyTypeName: LuaRunner, Assembly-CSharp
-        m_MethodName: RunLuaHealthUpdate
+      - m_Target: {fileID: 649548742}
+        m_TargetAssemblyTypeName: TestRunner, Assembly-CSharp
+        m_MethodName: RunLuaAndTimeIt
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2567,9 +2549,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 162307095}
-        m_TargetAssemblyTypeName: LuaRunner, Assembly-CSharp
-        m_MethodName: RunCSharpHealthUpdate
+      - m_Target: {fileID: 649548742}
+        m_TargetAssemblyTypeName: TestRunner, Assembly-CSharp
+        m_MethodName: RunCSharpAndTimeIt
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2700,9 +2682,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 162307095}
-        m_TargetAssemblyTypeName: LuaRunner, Assembly-CSharp
-        m_MethodName: RunLuaHealthUpdate
+      - m_Target: {fileID: 874778567}
+        m_TargetAssemblyTypeName: TestRunner, Assembly-CSharp
+        m_MethodName: RunLuaAndTimeIt
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2907,4 +2889,3 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 1607344128}
   - {fileID: 100965104}
-  - {fileID: 162307096}
