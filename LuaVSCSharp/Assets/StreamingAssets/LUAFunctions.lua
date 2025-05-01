@@ -48,3 +48,30 @@ function nested_loop_test()
 
     set_text("The LUA result is: " .. tostring(result))
 end
+
+function sort_search_test()
+    math.randomseed(os.time()) -- Seed for random number generation
+    local result = 0
+
+    for i = 1, 1000 do
+        -- Generate a table of 500 random integers
+        local numbers = {}
+        for j = 1, 500 do
+            table.insert(numbers, math.random(1, 1000)) -- Random numbers between 1 and 1000
+        end
+
+        -- Sort the table
+        table.sort(numbers)
+
+        -- Perform an aggregation (e.g., compute the sum of the table)
+        local sum = 0
+        for _, num in ipairs(numbers) do
+            sum = sum + num
+        end
+
+        -- Accumulate the result
+        result = result + sum
+    end
+
+    set_text("The LUA result is: " .. tostring(result))
+end

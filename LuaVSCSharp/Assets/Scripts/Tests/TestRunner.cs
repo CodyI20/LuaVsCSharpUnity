@@ -1,10 +1,26 @@
+using System;
 using MoonSharp.Interpreter;
 using UnityEngine;
 using System.Diagnostics;
+using TMPro;
 
 public abstract class TestRunner : MonoBehaviour
 {
+    protected TextMeshProUGUI _uiText;
     protected Script luaScript;
+
+    private void Awake()
+    {
+        _uiText = GameObject.FindGameObjectWithTag("ResultText").GetComponent<TextMeshProUGUI>();
+        
+        if (_uiText == null){
+            UnityEngine.Debug.LogError("TextMeshProUGUI component not found on GameObject with tag 'ResultText'");
+        }
+        else
+        {
+            _uiText.text = "Press a button to run a test";
+        }
+    }
 
     protected virtual void Start()
     {
@@ -13,6 +29,10 @@ public abstract class TestRunner : MonoBehaviour
         // Load Lua file from StreamingAssets
         string luaPath = System.IO.Path.Combine(Application.streamingAssetsPath, "LUAFunctions.lua");
         string luaCode = System.IO.File.ReadAllText(luaPath);
+        
+        luaScript.Globals["set_text"] = (System.Action<string>)((newText) => {
+            _uiText.text = newText;
+        });
 
         luaScript.DoString(luaCode); // Executes and registers the Lua functions
     }
@@ -25,7 +45,18 @@ public abstract class TestRunner : MonoBehaviour
         var stopwatch = Stopwatch.StartNew();
         LuaTestLogic();
         stopwatch.Stop();
-        ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - LUA");
+        switch (stopwatch.ElapsedMilliseconds)
+        {
+            case < 100:
+                ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - LUA", ExecutionTimeSeverity.Low);
+                break;
+            case < 500:
+                ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - LUA", ExecutionTimeSeverity.Medium);
+                break;
+            case >= 500:
+                ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - LUA", ExecutionTimeSeverity.High);
+                break;
+        }
         UnityEngine.Debug.Log("Lua Execution Time: " + stopwatch.ElapsedMilliseconds + " ms");
     }
 
@@ -34,8 +65,18 @@ public abstract class TestRunner : MonoBehaviour
         var stopwatch = Stopwatch.StartNew();
         CSharpTestLogic();
         stopwatch.Stop();
-        ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - C#");
+        switch (stopwatch.ElapsedMilliseconds)
+        {
+            case < 100:
+                ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - C#", ExecutionTimeSeverity.Low);
+                break;
+            case < 500:
+                ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - C#", ExecutionTimeSeverity.Medium);
+                break;
+            case >= 500:
+                ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - C#", ExecutionTimeSeverity.High);
+                break;
+        }
         UnityEngine.Debug.Log("C# Execution Time: " + stopwatch.ElapsedMilliseconds + " ms");
     }
-    
 }

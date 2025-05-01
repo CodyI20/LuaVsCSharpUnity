@@ -3,15 +3,6 @@ using TMPro;
 
 public class NestedLoopTest : TestRunner
 {
-    [SerializeField] private TextMeshProUGUI text;
-
-    protected override void Start()
-    {
-        base.Start();
-        luaScript.Globals["set_text"] = (System.Action<string>)((newText) => {
-            text.text = newText;
-        });
-    }
     protected override void LuaTestLogic()
     {
         luaScript.Call(luaScript.Globals["nested_loop_test"]);
@@ -43,6 +34,6 @@ public class NestedLoopTest : TestRunner
                 result += addition + multiplication + division + subtraction + sine + cosine + tangent + exponential + logarithm;
             }
         }
-        text.text = $"The C# result is: {result.ToString()}";
+        _uiText.text = $"The C# result is: {result.ToString()}";
     }
 }
