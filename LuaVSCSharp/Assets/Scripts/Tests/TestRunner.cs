@@ -7,6 +7,8 @@ public abstract class TestRunner : MonoBehaviour
 {
     protected TextMeshProUGUI _uiText;
     protected Script luaScript;
+    
+    [SerializeField] private string textToDisplay = "DEFAULT";
 
     private void Awake()
     {

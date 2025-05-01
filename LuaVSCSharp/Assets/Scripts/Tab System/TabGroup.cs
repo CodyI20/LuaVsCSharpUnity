@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class TabGroup : MonoBehaviour
 {
+    public static event Action<TestRunner> OnTabSelectedEvent;
     private TabButton[] _tabButtons;
     
     [SerializeField] private List<GameObject> objectsToSwap;
@@ -26,6 +28,9 @@ public class TabGroup : MonoBehaviour
     {
         Debug.Log(button.name);
         int index = button.transform.GetSiblingIndex();
+
+        objectsToSwap[index].TryGetComponent<TestRunner>(out var testRunner);
+        OnTabSelectedEvent?.Invoke(testRunner);
         for (int i = 0; i < objectsToSwap.Count; i++)
         {
             if (i == index)
