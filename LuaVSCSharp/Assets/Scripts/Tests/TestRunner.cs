@@ -25,6 +25,7 @@ public abstract class TestRunner : MonoBehaviour
         var stopwatch = Stopwatch.StartNew();
         LuaTestLogic();
         stopwatch.Stop();
+        ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - LUA");
         UnityEngine.Debug.Log("Lua Execution Time: " + stopwatch.ElapsedMilliseconds + " ms");
     }
 
@@ -33,6 +34,7 @@ public abstract class TestRunner : MonoBehaviour
         var stopwatch = Stopwatch.StartNew();
         CSharpTestLogic();
         stopwatch.Stop();
+        ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - C#");
         UnityEngine.Debug.Log("C# Execution Time: " + stopwatch.ElapsedMilliseconds + " ms");
     }
     
