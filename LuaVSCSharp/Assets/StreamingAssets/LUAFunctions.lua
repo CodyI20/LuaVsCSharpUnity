@@ -75,3 +75,59 @@ function sort_search_test()
 
     set_text("The LUA result is: " .. tostring(result))
 end
+
+function allocate_and_discard_test()
+    local result = 0
+
+    for i = 1, 1000 do
+        -- Allocate a new table
+        local list = {}
+
+        -- Fill the table with 1000 integers
+        for j = 1, 1000 do
+            list[j] = j
+        end
+
+        -- Discard the table by setting it to nil
+        list = nil
+
+        -- Accumulate a dummy result to prevent optimization
+        result = result + 0 -- No equivalent to list.Count in Lua
+    end
+
+    set_text("The LUA result is: " .. tostring(result))
+end
+
+function dynamic_ui_element_generation()
+    local parent = get_ui_parent() -- Retrieve the parent Transform
+        local prefab = get_ui_prefab() -- Retrieve the UI prefab
+    
+        for i = 1, 1000 do
+            -- Instantiate a new UI element
+            local uiElement = instantiate_ui_prefab(prefab, parent)
+            local parentRect = parent:GetComponent("RectTransform")
+    
+            if parentRect ~= nil then
+                -- Generate random positions within the parent's bounds
+                local x = math.random(parentRect.rect.xMin, parentRect.rect.xMax)
+                local y = math.random(parentRect.rect.yMin, parentRect.rect.yMax)
+    
+                -- Clamp the position within the parent's bounds
+                local clampedX = math.max(parentRect.rect.xMin, math.min(x, parentRect.rect.xMax))
+                local clampedY = math.max(parentRect.rect.yMin, math.min(y, parentRect.rect.yMax))
+                set_position(uiElement, clampedX, clampedY)
+            else
+                print("Parent does not have a RectTransform. Positioning may not be constrained.")
+    
+                -- Generate random positions without bounds
+                local x = math.random(-500, 500)
+                local y = math.random(-500, 500)
+                set_position(uiElement, x, y)
+            end
+    
+            -- Optionally destroy some elements after a few iterations
+            if i % 100 == 0 then
+                destroy_ui_element(uiElement)
+            end
+        end
+end
