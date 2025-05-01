@@ -32,6 +32,8 @@ public abstract class TestRunner : MonoBehaviour
         luaScript.Globals["set_text"] = (System.Action<string>)((newText) => {
             _uiText.text = newText;
         });
+        
+        luaScript.Globals["print_to_Unity_console"] = (System.Action<string>)(UnityEngine.Debug.Log);
 
         luaScript.DoString(luaCode); // Executes and registers the Lua functions
     }

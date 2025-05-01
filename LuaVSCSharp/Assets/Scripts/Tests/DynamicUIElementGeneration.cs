@@ -4,7 +4,7 @@ using UnityEngine;
 public class DynamicUIElementGeneration : TestRunner
 {
     [SerializeField] private GameObject uiPrefab; // Prefab of the UI element
-    [SerializeField] private Transform parent; // Parent UI object (e.g., Canvas)
+    [SerializeField] private Transform parent; // Parent UI object
 
     protected override void Start()
     {
@@ -15,24 +15,15 @@ public class DynamicUIElementGeneration : TestRunner
         UserData.RegisterType<Transform>();
         UserData.RegisterType<RectTransform>();
         UserData.RegisterType<Rect>();
+        
+        luaScript.Globals["get_ui_parent"] = (System.Func<Transform>)(() => parent);
 
-        luaScript.Globals["get_ui_prefab"] = (System.Func<GameObject>)(() => {
-            return uiPrefab;
-        });
-        luaScript.Globals["get_ui_parent"] = (System.Func<Transform>)(() => {
-            return parent;
-        });
+        luaScript.Globals["instantiate_ui_prefab"] = (System.Func<GameObject>)(() => Instantiate(uiPrefab, parent));
 
-        luaScript.Globals["instantiate_ui_prefab"] = (System.Func<GameObject, Transform, GameObject>)((prefab, pParent) => {
-            return Instantiate(uiPrefab, parent);
-        });
-
-        luaScript.Globals["destroy_ui_element"] = (System.Action<GameObject>)((uiElement) => {
-            Destroy(uiElement);
-        });
+        luaScript.Globals["destroy_ui_element"] = (System.Action<GameObject>)(Destroy);
         
         luaScript.Globals["set_position"] = (System.Action<GameObject, float, float>)((uiElement, x, y) => {
-            uiElement.transform.position = new Vector3(x,y,0);
+            uiElement.transform.localPosition = new Vector3(x,y,0);
         });
     }
 
@@ -70,7 +61,7 @@ public class DynamicUIElementGeneration : TestRunner
             }
 
             // Optionally destroy some elements after a few iterations
-            if (i % 100 == 0 && i > 0)
+            if (i % 10 == 0 && i > 0)
             {
                 Destroy(uiElement);
             }

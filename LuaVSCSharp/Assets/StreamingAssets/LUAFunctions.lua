@@ -100,11 +100,10 @@ end
 
 function dynamic_ui_element_generation()
     local parent = get_ui_parent() -- Retrieve the parent Transform
-        local prefab = get_ui_prefab() -- Retrieve the UI prefab
     
         for i = 1, 1000 do
             -- Instantiate a new UI element
-            local uiElement = instantiate_ui_prefab(prefab, parent)
+            local uiElement = instantiate_ui_prefab()
             local parentRect = parent:GetComponent("RectTransform")
     
             if parentRect ~= nil then
@@ -126,7 +125,7 @@ function dynamic_ui_element_generation()
             end
     
             -- Optionally destroy some elements after a few iterations
-            if i % 100 == 0 then
+            if i % 10 == 0 then
                 destroy_ui_element(uiElement)
             end
         end
