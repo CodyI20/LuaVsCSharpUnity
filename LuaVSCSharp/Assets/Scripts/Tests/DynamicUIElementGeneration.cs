@@ -1,11 +1,13 @@
-﻿using MoonSharp.Interpreter;
+﻿using System.Collections;
+using MoonSharp.Interpreter;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class DynamicUIElementGeneration : TestRunner
 {
     [SerializeField] private GameObject uiPrefab; // Prefab of the UI element
     [SerializeField] private Transform parent; // Parent UI object
-
+    private HashSet<GameObject> uiElements = new HashSet<GameObject>();
     protected override void Start()
     {
         base.Start();
@@ -18,26 +20,56 @@ public class DynamicUIElementGeneration : TestRunner
         
         luaScript.Globals["get_ui_parent"] = (System.Func<Transform>)(() => parent);
 
-        luaScript.Globals["instantiate_ui_prefab"] = (System.Func<GameObject>)(() => Instantiate(uiPrefab, parent));
+        luaScript.Globals["instantiate_ui_prefab"] = (System.Func<GameObject>)(() => {
+            GameObject uiElement = Instantiate(uiPrefab, parent);
+            uiElements.Add(uiElement);
+            return uiElement;
+        });
 
-        luaScript.Globals["destroy_ui_element"] = (System.Action<GameObject>)(Destroy);
+        luaScript.Globals["destroy_ui_element"] = (System.Action<GameObject>)(uiElement => {
+            uiElements.Remove(uiElement);
+            Destroy(uiElement);
+        });
         
         luaScript.Globals["set_position"] = (System.Action<GameObject, float, float>)((uiElement, x, y) => {
             uiElement.transform.localPosition = new Vector3(x,y,0);
         });
     }
 
+    private void OnEnable()
+    {
+        TabButton.OnTabSelected += DeleteAllUIElements;
+    }
+    private void OnDisable()
+    {
+        TabButton.OnTabSelected -= DeleteAllUIElements;
+    }
+    
+    private void DeleteAllUIElements()
+    {
+        foreach (var uiElement in uiElements)
+        {
+            Destroy(uiElement);
+        }
+        uiElements.Clear();
+    }
+
     protected override void LuaTestLogic()
     {
+        DeleteAllUIElements(); // Clear UI elements at the start
         luaScript.Call(luaScript.Globals["dynamic_ui_element_generation"]);
     }
+    
 
     protected override void CSharpTestLogic()
     {
+        DeleteAllUIElements();
         for (int i = 0; i < 1000; i++)
         {
             // Instantiate a new UI element
             GameObject uiElement = Instantiate(uiPrefab, parent);
+            uiElements.Add(uiElement);
+            
             RectTransform parentRect = parent.GetComponent<RectTransform>();
             if (parentRect != null)
             {
@@ -64,6 +96,7 @@ public class DynamicUIElementGeneration : TestRunner
             if (i % 10 == 0 && i > 0)
             {
                 Destroy(uiElement);
+                uiElements.Remove(uiElement);
             }
         }
     }

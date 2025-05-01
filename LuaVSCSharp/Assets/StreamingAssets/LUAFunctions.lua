@@ -98,6 +98,7 @@ function allocate_and_discard_test()
     set_text("The LUA result is: " .. tostring(result))
 end
 
+
 function dynamic_ui_element_generation()
     local parent = get_ui_parent() -- Retrieve the parent Transform
     

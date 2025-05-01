@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class TabButton : Button
 {
+    public static event Action OnTabSelected;
     private TabGroup _tabGroup;
     
     protected override void Awake()
@@ -47,7 +48,7 @@ public class TabButton : Button
 
     private void MouseDownAction()
     {
-        Debug.Log("Mouse Down");
+        OnTabSelected?.Invoke();
         _tabGroup.OnTabSelected(this);
     }
 }
