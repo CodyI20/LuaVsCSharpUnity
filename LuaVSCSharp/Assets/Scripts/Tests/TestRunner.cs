@@ -54,7 +54,7 @@ public abstract class TestRunner : MonoBehaviour
                ExecutionTimeSeverity.High;
     }
     
-    private float RunAndTimeInternal(Action<int> testLogic, string label)
+    private float RunAndTime(Action<int> testLogic, string label)
     {
         float start = Time.realtimeSinceStartup;
         testLogic(iterations);
@@ -67,16 +67,6 @@ public abstract class TestRunner : MonoBehaviour
         return elapsed;
     }
     
-    private void RunAndTime(Action<int> testLogic, string label)
-    {
-        RunAndTimeInternal(testLogic, label);
-    }
-    
-    private float RunAndTimeF(Action<int> testLogic, string label)
-    {
-        return RunAndTimeInternal(testLogic, label);
-    }
-    
     public void RunLuaAndTimeIt()
     {
         RunAndTime(LuaTestLogic, "LUA");
@@ -86,15 +76,15 @@ public abstract class TestRunner : MonoBehaviour
     {
         RunAndTime(CSharpTestLogic, "C#");
     }
-    
-    protected float RunLuaAndTimeItF()
+
+    private float RunLuaAndTimeItF()
     {
-        return RunAndTimeF(LuaTestLogic, "LUA");
+        return RunAndTime(LuaTestLogic, "LUA");
     }
-    
-    protected float RunCSharpAndTimeItF()
+
+    private float RunCSharpAndTimeItF()
     {
-        return RunAndTimeF(CSharpTestLogic, "C#");
+        return RunAndTime(CSharpTestLogic, "C#");
     }
     
     public void BenchmarkLua()

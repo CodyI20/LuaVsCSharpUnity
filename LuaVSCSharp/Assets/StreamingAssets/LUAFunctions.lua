@@ -107,10 +107,5 @@ function dynamic_ui_element_generation(iterations)
                 local y = math.random(-500, 500)
                 set_position(uiElement, x, y)
             end
-    
-            -- Optionally destroy some elements after a few iterations
-            if i % 10 == 0 then
-                destroy_ui_element(uiElement)
-            end
         end
 end

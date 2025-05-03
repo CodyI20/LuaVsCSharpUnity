@@ -1,7 +1,9 @@
-﻿using System.Collections;
+using System;
+using System.Collections;
 using MoonSharp.Interpreter;
 using UnityEngine;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
 public class DynamicUIElementGeneration : TestRunner
 {
@@ -44,12 +46,15 @@ public class DynamicUIElementGeneration : TestRunner
     {
         TabButton.OnTabSelected -= DeleteAllUIElements;
     }
-    
+
     private void DeleteAllUIElements()
     {
         foreach (var uiElement in uiElements)
         {
-            Destroy(uiElement);
+            if (uiElement != null)
+            {
+                DestroyImmediate(uiElement);
+            }
         }
         uiElements.Clear();
     }
@@ -90,13 +95,6 @@ public class DynamicUIElementGeneration : TestRunner
                 float x = Random.Range(-500, 500);
                 float y = Random.Range(-500, 500);
                 uiElement.transform.localPosition = new Vector3(x, y, 0);
-            }
-
-            // Optionally destroy some elements after a few iterations
-            if (i % 10 == 0 && i > 0)
-            {
-                Destroy(uiElement);
-                uiElements.Remove(uiElement);
             }
         }
     }
