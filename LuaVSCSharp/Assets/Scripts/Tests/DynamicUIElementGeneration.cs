@@ -54,17 +54,17 @@ public class DynamicUIElementGeneration : TestRunner
         uiElements.Clear();
     }
 
-    protected override void LuaTestLogic()
+    protected override void LuaTestLogic(int iterations = 1000)
     {
         DeleteAllUIElements(); // Clear UI elements at the start
-        luaScript.Call(luaScript.Globals["dynamic_ui_element_generation"]);
+        luaScript.Call(luaScript.Globals["dynamic_ui_element_generation"], iterations);
     }
     
 
-    protected override void CSharpTestLogic()
+    protected override void CSharpTestLogic(int iterations = 1000)
     {
         DeleteAllUIElements();
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < iterations; i++)
         {
             // Instantiate a new UI element
             GameObject uiElement = Instantiate(uiPrefab, parent);

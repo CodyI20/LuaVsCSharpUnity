@@ -1,30 +1,13 @@
-function update_health()
-    math.randomseed(42)
-    local health = 100
-    for i = 1, 1000 do
-        local damage = math.random(5, 20)
-        local heal = math.random(1, 30)
-        health = health - damage
-        health = math.min(100, health + heal)
-        if health < 10 then
-            set_color("red")
-        else
-            set_color("green")
-        end
-        set_fill(health / 100)
-    end
-end
-
-function display_text()
-    for i=1, 1000 do
+function display_text(iterations)
+    for i=1, iterations do
         set_text("Hello from LUA!")
     end
 end
 
-function nested_loop_test()
+function nested_loop_test(iterations)
     local result = 0
 
-    for i = 0, 999 do
+    for i = 0, iterations-1 do
         for j = 0, 199 do
             -- Basic arithmetic operations
             local addition = i + j
@@ -49,11 +32,11 @@ function nested_loop_test()
     set_text("The LUA result is: " .. tostring(result))
 end
 
-function sort_search_test()
+function sort_search_test(iterations)
     math.randomseed(os.time()) -- Seed for random number generation
     local result = 0
 
-    for i = 1, 1000 do
+    for i = 1, iterations do
         -- Generate a table of 500 random integers
         local numbers = {}
         for j = 1, 500 do
@@ -76,10 +59,10 @@ function sort_search_test()
     set_text("The LUA result is: " .. tostring(result))
 end
 
-function allocate_and_discard_test()
+function allocate_and_discard_test(iterations)
     local result = 0
 
-    for i = 1, 1000 do
+    for i = 1, iterations do
         -- Allocate a new table
         local list = {}
 
@@ -99,10 +82,10 @@ function allocate_and_discard_test()
 end
 
 
-function dynamic_ui_element_generation()
+function dynamic_ui_element_generation(iterations)
     local parent = get_ui_parent() -- Retrieve the parent Transform
     
-        for i = 1, 1000 do
+        for i = 1, iterations do
             -- Instantiate a new UI element
             local uiElement = instantiate_ui_prefab()
             local parentRect = parent:GetComponent("RectTransform")

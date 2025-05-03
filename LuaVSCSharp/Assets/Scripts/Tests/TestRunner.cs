@@ -38,8 +38,8 @@ public abstract class TestRunner : MonoBehaviour
         luaScript.DoString(luaCode); // Executes and registers the Lua functions
     }
 
-    protected abstract void LuaTestLogic();
-    protected abstract void CSharpTestLogic();
+    protected abstract void LuaTestLogic(int iterations = 1000);
+    protected abstract void CSharpTestLogic(int iterations = 1000);
 
     public void RunLuaAndTimeIt()
     {
