@@ -47,54 +47,69 @@ public abstract class TestRunner : MonoBehaviour
     protected abstract void LuaTestLogic(int iterations = 1000);
     protected abstract void CSharpTestLogic(int iterations = 1000);
 
+   private ExecutionTimeSeverity GetSeverity(float elapsed)
+    {
+        return elapsed < 100 ? ExecutionTimeSeverity.Low :
+               elapsed < 500 ? ExecutionTimeSeverity.Medium :
+               ExecutionTimeSeverity.High;
+    }
+    
+    private float RunAndTimeInternal(Action<int> testLogic, string label)
+    {
+        float start = Time.realtimeSinceStartup;
+        testLogic(iterations);
+        float elapsed = (Time.realtimeSinceStartup - start) * 1000f; // ms
+    
+        ExecutionTimeSeverity severity = GetSeverity(elapsed);
+        ExecTimeText.Instance.SetText($"{elapsed:F3} ms - {label}", severity);
+        UnityEngine.Debug.Log($"{label} Execution Time: {elapsed} ms");
+    
+        return elapsed;
+    }
+    
+    private void RunAndTime(Action<int> testLogic, string label)
+    {
+        RunAndTimeInternal(testLogic, label);
+    }
+    
+    private float RunAndTimeF(Action<int> testLogic, string label)
+    {
+        return RunAndTimeInternal(testLogic, label);
+    }
+    
     public void RunLuaAndTimeIt()
     {
-        var stopwatch = Stopwatch.StartNew();
-        LuaTestLogic();
-        stopwatch.Stop();
-        switch (stopwatch.ElapsedMilliseconds)
-        {
-            case < 100:
-                ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - LUA", ExecutionTimeSeverity.Low);
-                break;
-            case < 500:
-                ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - LUA", ExecutionTimeSeverity.Medium);
-                break;
-            case >= 500:
-                ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - LUA", ExecutionTimeSeverity.High);
-                break;
-        }
-        UnityEngine.Debug.Log("Lua Execution Time: " + stopwatch.ElapsedMilliseconds + " ms");
+        RunAndTime(LuaTestLogic, "LUA");
     }
-
+    
     public void RunCSharpAndTimeIt()
     {
-        var stopwatch = Stopwatch.StartNew();
-        CSharpTestLogic();
-        stopwatch.Stop();
-        switch (stopwatch.ElapsedMilliseconds)
-        {
-            case < 100:
-                ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - C#", ExecutionTimeSeverity.Low);
-                break;
-            case < 500:
-                ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - C#", ExecutionTimeSeverity.Medium);
-                break;
-            case >= 500:
-                ExecTimeText.Instance.SetText($"{stopwatch.ElapsedMilliseconds} ms - C#", ExecutionTimeSeverity.High);
-                break;
-        }
-        UnityEngine.Debug.Log("C# Execution Time: " + stopwatch.ElapsedMilliseconds + " ms");
+        RunAndTime(CSharpTestLogic, "C#");
+    }
+    
+    protected float RunLuaAndTimeItF()
+    {
+        return RunAndTimeF(LuaTestLogic, "LUA");
+    }
+    
+    protected float RunCSharpAndTimeItF()
+    {
+        return RunAndTimeF(CSharpTestLogic, "C#");
     }
     
     public void BenchmarkLua()
     {
-        BenchmarkManager.Instance.RunBenchmark(test_name + "LUA", iterations, runs_per_test, LuaTestLogic);
+        BenchmarkManager.Instance.RunBenchmark(test_name,"LUA", runs_per_test, RunLuaAndTimeItF);
     }
 
     public void BenchmarkCSharp()
     {
-        BenchmarkManager.Instance.RunBenchmark(test_name + "C#", iterations, runs_per_test, CSharpTestLogic);
+        BenchmarkManager.Instance.RunBenchmark(test_name, "C#", runs_per_test, RunCSharpAndTimeItF);
+    }
+    
+    public void BenchmarkBoth()
+    {
+        BenchmarkManager.Instance.RunBothBenchmarks(test_name, runs_per_test, RunLuaAndTimeItF, RunCSharpAndTimeItF);
     }
 
 }
