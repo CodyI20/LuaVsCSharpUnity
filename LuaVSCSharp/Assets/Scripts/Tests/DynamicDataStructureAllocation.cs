@@ -2,12 +2,12 @@
 
 public class DynamicDataStructureAllocation : TestRunner
 {
-    protected override void LuaTestLogic(int iterations = 1000)
+    protected override void LuaTestLogic(int iterations)
     {
         luaScript.Call(luaScript.Globals["allocate_and_discard_test"], iterations);
     }
 
-    protected override void CSharpTestLogic(int iterations = 1000)
+    protected override void CSharpTestLogic(int iterations)
     {
         float result = 0f;
 

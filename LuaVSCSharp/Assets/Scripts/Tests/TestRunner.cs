@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using MoonSharp.Interpreter;
 using UnityEngine;
 using System.Diagnostics;
@@ -7,6 +9,10 @@ public abstract class TestRunner : MonoBehaviour
 {
     protected TextMeshProUGUI _uiText;
     protected Script luaScript;
+    
+    [SerializeField] private string test_name = "DEFAULT_TEST_NAME";
+    [SerializeField] private int iterations = 1000;
+    [SerializeField] private int runs_per_test = 20;
 
     private void Awake()
     {
@@ -80,4 +86,15 @@ public abstract class TestRunner : MonoBehaviour
         }
         UnityEngine.Debug.Log("C# Execution Time: " + stopwatch.ElapsedMilliseconds + " ms");
     }
+    
+    public void BenchmarkLua()
+    {
+        BenchmarkManager.Instance.RunBenchmark(test_name + "LUA", iterations, runs_per_test, LuaTestLogic);
+    }
+
+    public void BenchmarkCSharp()
+    {
+        BenchmarkManager.Instance.RunBenchmark(test_name + "C#", iterations, runs_per_test, CSharpTestLogic);
+    }
+
 }

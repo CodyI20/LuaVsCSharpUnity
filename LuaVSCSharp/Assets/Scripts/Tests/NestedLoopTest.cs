@@ -3,12 +3,12 @@ using TMPro;
 
 public class NestedLoopTest : TestRunner
 {
-    protected override void LuaTestLogic(int iterations = 1000)
+    protected override void LuaTestLogic(int iterations)
     {
         luaScript.Call(luaScript.Globals["nested_loop_test"], iterations);
     }
 
-    protected override void CSharpTestLogic(int iterations = 1000)
+    protected override void CSharpTestLogic(int iterations)
     {
         float result = 0f;
         for (int i = 0; i < iterations; i++)

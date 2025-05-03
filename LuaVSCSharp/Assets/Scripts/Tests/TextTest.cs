@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class TextTest : TestRunner
 {
-    protected override void LuaTestLogic(int iterations = 1000)
+    protected override void LuaTestLogic(int iterations)
     {
         luaScript.Call(luaScript.Globals["display_text"],iterations);
     }
 
-    protected override void CSharpTestLogic(int iterations = 1000)
+    protected override void CSharpTestLogic(int iterations)
     {
         for (int i = 0; i < iterations; i++)
         {

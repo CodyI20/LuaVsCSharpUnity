@@ -1,11 +1,11 @@
 ﻿public class SortAndSearchTest : TestRunner
 {
-    protected override void LuaTestLogic(int iterations = 1000)
+    protected override void LuaTestLogic(int iterations)
     {
         luaScript.Call(luaScript.Globals["sort_search_test"], iterations);
     }
 
-    protected override void CSharpTestLogic(int iterations = 1000)
+    protected override void CSharpTestLogic(int iterations)
     {
         System.Random random = new System.Random();
         float result = 0f;
