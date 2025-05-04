@@ -53,7 +53,7 @@ public class DynamicUIElementGeneration : TestRunner
         {
             if (uiElement != null)
             {
-                DestroyImmediate(uiElement);
+                DestroyImmediate(uiElement); // Using DestoryImmediate to ensure the object is properly disposed of
             }
         }
         uiElements.Clear();
