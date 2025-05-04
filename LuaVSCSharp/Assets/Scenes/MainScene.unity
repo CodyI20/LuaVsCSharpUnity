@@ -1625,8 +1625,8 @@ PrefabInstance:
       value: 'Sort and Search - Highest severity
 
 
-        Sorts and searches through
-        a data array each iteration for a total of X times.
+        Sorts and searches a list
+        of integers through a data array each iteration for a total of X times.
 
 '
       objectReference: {fileID: 0}
